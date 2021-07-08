@@ -1,8 +1,16 @@
+import axios from 'axios'
 /*
   STEP 1: using axios, send a GET request to the following URL
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
+
+axios.get(`https://api.github.com/users/rkshockey`)
+  .then(res => {
+    const meCard = cardMaker(res.data)
+    document.querySelector(`.cards`).appendChild(meCard)
+  })
+  .catch(err => console.log(err));
 
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
@@ -49,6 +57,52 @@ const followersArray = [];
       </div>
     </div>
 */
+function cardMaker ({ avatar_url, name, login, location, html_url, followers, following, bio }) {
+  const card = document.createElement(`div`);
+  const avatar = document.createElement(`img`);
+  const cardInfo = document.createElement(`div`);
+  const nameH3 = document.createElement(`h3`);
+  const username = document.createElement(`p`);
+  const locationP = document.createElement(`p`);
+  const profile = document.createElement(`p`);
+  const profileA = document.createElement(`a`);
+  const followersP = document.createElement(`p`);
+  const followingP = document.createElement(`p`);
+  const bioP = document.createElement(`p`);
+
+  card.appendChild(avatar);
+  card.appendChild(cardInfo);
+  cardInfo.appendChild(nameH3);
+  cardInfo.appendChild(username);
+  cardInfo.appendChild(locationP);
+  cardInfo.appendChild(profile);
+  cardInfo.appendChild(profileA);
+  cardInfo.appendChild(followersP);
+  cardInfo.appendChild(followingP);
+  cardInfo.appendChild(bioP);
+
+  card.classList.add(`card`);
+  cardInfo.classList.add(`class-list`);
+  nameH3.classList.add(`name`);
+  username.classList.add(`username`);
+
+  avatar.src = avatar_url;
+  avatar.alt = `Avatar image of ${name}`
+  nameH3.textContent = name;
+  username.textContent = login;
+  locationP.textContent = location;
+  profile.textContent= `Profile:`
+  profileA.href = html_url;
+  profileA.textContent = html_url;
+  followersP.textContent = `Followers: ${followers}`;
+  followingP.textContent = `Following: ${following}`;
+  bioP.textContent = bio;
+
+  console.log(profile)
+
+  return card
+}
+
 
 /*
   List of LS Instructors Github username's:
