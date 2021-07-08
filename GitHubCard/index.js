@@ -7,8 +7,20 @@ import axios from 'axios'
 
 axios.get(`https://api.github.com/users/rkshockey`)
   .then(res => {
-    const meCard = cardMaker(res.data)
-    document.querySelector(`.cards`).appendChild(meCard)
+    const meCard = cardMaker(res.data);
+    document.querySelector(`.cards`).appendChild(meCard);
+    axios.get(`${res.data.followers_url}`)
+      .then (res => {
+        res.data.forEach(person => {
+          axios.get(`https://api.github.com/users/${person.login}`)
+          .then(res => {
+            let card = cardMaker(res.data)
+            document.querySelector(`.cards`).appendChild(card)
+          })
+          .catch(err => console.log(err));
+        })
+      })
+      .catch(err => console.log(err))
   })
   .catch(err => console.log(err));
 
@@ -43,14 +55,14 @@ const followersArray = [`tetondan`,
   `bigknell`
 ];
 
-followersArray.forEach(person => {
-  axios.get(`https://api.github.com/users/${person}`)
-  .then(res => {
-    let card = cardMaker(res.data)
-    document.querySelector(`.cards`).appendChild(card)
-  })
-  .catch(err => console.log(err));
-})
+// followersArray.forEach(person => {
+//   axios.get(`https://api.github.com/users/${person}`)
+//   .then(res => {
+//     let card = cardMaker(res.data)
+//     document.querySelector(`.cards`).appendChild(card)
+//   })
+//   .catch(err => console.log(err));
+// })
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
