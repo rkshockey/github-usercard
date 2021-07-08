@@ -83,7 +83,7 @@ const followersArray = [`tetondan`,
       </div>
     </div>
 */
-function cardMaker ({ avatar_url, name, login, location, html_url, followers, following, bio }) {
+function cardMaker ({ avatar_url, name, login, location, html_url, followers, following, bio, company, email, hireable }) {
   const card = document.createElement(`div`);
   const avatar = document.createElement(`img`);
   const cardInfo = document.createElement(`div`);
@@ -127,25 +127,42 @@ function cardMaker ({ avatar_url, name, login, location, html_url, followers, fo
   profile.appendChild(profileA);
 
   const openButton = document.createElement(`button`);
-  const closeButton = document.createElement(`button`)
+  const closeButton = document.createElement(`button`);
+  const cardInfoLower = document.createElement(`div`);
+  const companyP = document.createElement(`p`);
+  const emailP = document.createElement(`p`);
+  const hire = document.createElement(`p`);
 
   card.appendChild(openButton);
   card.appendChild(closeButton);
+  card.appendChild(cardInfoLower);
+  cardInfoLower.appendChild(companyP);
+  cardInfoLower.appendChild(emailP);
+  cardInfoLower.appendChild(hire);
 
   openButton.classList.add(`card-button`);
   closeButton.classList.add(`card-button`);
-  closeButton.classList.add(`close`)
+  closeButton.classList.add(`close`);
+  cardInfoLower.classList.add(`close`);
 
   openButton.textContent = `See more`;
   closeButton.textContent = `See less`;
+  companyP.textContent = `Company: ${company}`;
+  emailP.textContent = `Email: ${email}`;
+  if (hireable === `yes`){
+    hire.textContent = `${name} is available to hire.`
+  }
 
   openButton.addEventListener(`click`, event => {
     openButton.classList.toggle(`open`);
     closeButton.classList.toggle(`close`);
+    cardInfoLower.classList.toggle(`close`);
+
   })
   closeButton.addEventListener(`click`, event => {
     openButton.classList.toggle(`open`);
     closeButton.classList.toggle(`close`);
+    cardInfoLower.classList.toggle(`close`);
   })
 
   return card
