@@ -101,11 +101,17 @@ body {
   margin-bottom: 30px;
 }
 
+.card-expanded{
+  height:30vh
+}
+
 .card img {
   width: 150px;
   height: 150px;
   border-radius: 3px;
   margin-right: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .card .name {
@@ -123,5 +129,17 @@ body {
   margin: 3px 0 10px;
 }
 
+.open {
+  display: none;
+}
+
+.close{
+  display: none;
+}
+
+.card-button {
+  width: 100px;
+  height: 30%;
+}
 
 

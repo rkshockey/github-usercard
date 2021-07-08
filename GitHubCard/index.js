@@ -1,8 +1,28 @@
+import axios from 'axios'
 /*
   STEP 1: using axios, send a GET request to the following URL
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
+
+axios.get(`https://api.github.com/users/rkshockey`)
+  .then(res => {
+    console.log(res.data);
+    document.querySelector(`.cards`).appendChild(cardMaker(res.data));
+    axios.get(`${res.data.followers_url}`)
+      .then (res => {
+        res.data.forEach(person => {
+          axios.get(`https://api.github.com/users/${person.login}`)
+          .then(res => {
+            let card = cardMaker(res.data)
+            document.querySelector(`.cards`).appendChild(card)
+          })
+          .catch(err => console.log(err));
+        })
+      })
+      .catch(err => console.log(err))
+  })
+  .catch(err => console.log(err));
 
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
@@ -28,7 +48,21 @@
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = [`tetondan`,
+  `dustinmyers`,
+  `justsml`,
+  `luishrd`,
+  `bigknell`
+];
+
+// followersArray.forEach(person => {
+//   axios.get(`https://api.github.com/users/${person}`)
+//   .then(res => {
+//     let card = cardMaker(res.data)
+//     document.querySelector(`.cards`).appendChild(card)
+//   })
+//   .catch(err => console.log(err));
+// })
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -49,6 +83,93 @@ const followersArray = [];
       </div>
     </div>
 */
+function cardMaker ({ avatar_url, name, login, location, html_url, followers, following, bio, company, email, hireable }) {
+  const card = document.createElement(`div`);
+  const avatar = document.createElement(`img`);
+  const cardInfo = document.createElement(`div`);
+  const nameH3 = document.createElement(`h3`);
+  const username = document.createElement(`p`);
+  const locationP = document.createElement(`p`);
+  const profile = document.createElement(`p`);
+  const profileA = document.createElement(`a`);
+  const followersP = document.createElement(`p`);
+  const followingP = document.createElement(`p`);
+  const bioP = document.createElement(`p`);
+
+  card.appendChild(avatar);
+  card.appendChild(cardInfo);
+  cardInfo.appendChild(nameH3);
+  cardInfo.appendChild(username);
+  cardInfo.appendChild(locationP);
+  cardInfo.appendChild(profile);
+  
+  cardInfo.appendChild(followersP);
+  cardInfo.appendChild(followingP);
+  cardInfo.appendChild(bioP);
+
+  card.classList.add(`card`);
+  cardInfo.classList.add(`class-list`);
+  nameH3.classList.add(`name`);
+  username.classList.add(`username`);
+
+  avatar.src = avatar_url;
+  avatar.alt = `Avatar image of ${name}`
+  nameH3.textContent = name;
+  username.textContent = login;
+  locationP.textContent = location;
+  profile.textContent= `Profile: `
+  profileA.href = html_url;
+  profileA.textContent = html_url;
+  followersP.textContent = `Followers: ${followers}`;
+  followingP.textContent = `Following: ${following}`;
+  bioP.textContent = bio;
+
+  profile.appendChild(profileA);
+
+  const openButton = document.createElement(`button`);
+  const closeButton = document.createElement(`button`);
+  const cardInfoLower = document.createElement(`div`);
+  const companyP = document.createElement(`p`);
+  const emailP = document.createElement(`p`);
+  const hire = document.createElement(`p`);
+
+  card.appendChild(openButton);
+  card.appendChild(closeButton);
+  card.appendChild(cardInfoLower);
+  cardInfoLower.appendChild(companyP);
+  cardInfoLower.appendChild(emailP);
+  cardInfoLower.appendChild(hire);
+
+  openButton.classList.add(`card-button`);
+  closeButton.classList.add(`card-button`);
+  closeButton.classList.add(`close`);
+  cardInfoLower.classList.add(`close`);
+
+  openButton.textContent = `See more`;
+  closeButton.textContent = `See less`;
+  companyP.textContent = `Company: ${company}`;
+  emailP.textContent = `Email: ${email}`;
+  if (hireable === `yes`){
+    hire.textContent = `${name} is available to hire.`
+  }
+
+  openButton.addEventListener(`click`, event => {
+    openButton.classList.toggle(`open`);
+    closeButton.classList.toggle(`close`);
+    cardInfoLower.classList.toggle(`close`);
+    card.classList.toggle(`card-expanded`);
+
+  })
+  closeButton.addEventListener(`click`, event => {
+    openButton.classList.toggle(`open`);
+    closeButton.classList.toggle(`close`);
+    cardInfoLower.classList.toggle(`close`);
+    card.classList.toggle(`card-expanded`);
+  })
+
+  return card
+}
+
 
 /*
   List of LS Instructors Github username's:
