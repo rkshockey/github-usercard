@@ -7,8 +7,8 @@ import axios from 'axios'
 
 axios.get(`https://api.github.com/users/rkshockey`)
   .then(res => {
-    const meCard = cardMaker(res.data);
-    document.querySelector(`.cards`).appendChild(meCard);
+    console.log(res.data);
+    document.querySelector(`.cards`).appendChild(cardMaker(res.data));
     axios.get(`${res.data.followers_url}`)
       .then (res => {
         res.data.forEach(person => {
@@ -125,6 +125,28 @@ function cardMaker ({ avatar_url, name, login, location, html_url, followers, fo
   bioP.textContent = bio;
 
   profile.appendChild(profileA);
+
+  const openButton = document.createElement(`button`);
+  const closeButton = document.createElement(`button`)
+
+  card.appendChild(openButton);
+  card.appendChild(closeButton);
+
+  openButton.classList.add(`card-button`);
+  closeButton.classList.add(`card-button`);
+  closeButton.classList.add(`close`)
+
+  openButton.textContent = `See more`;
+  closeButton.textContent = `See less`;
+
+  openButton.addEventListener(`click`, event => {
+    openButton.classList.toggle(`open`);
+    closeButton.classList.toggle(`close`);
+  })
+  closeButton.addEventListener(`click`, event => {
+    openButton.classList.toggle(`open`);
+    closeButton.classList.toggle(`close`);
+  })
 
   return card
 }

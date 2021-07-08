@@ -123,5 +123,17 @@ body {
   margin: 3px 0 10px;
 }
 
+.open {
+  display: none;
+}
+
+.close{
+  display: none;
+}
+
+.card-button {
+  width: 100px;
+  height: 30%;
+}
 
 
