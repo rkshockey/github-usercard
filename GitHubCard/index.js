@@ -157,12 +157,14 @@ function cardMaker ({ avatar_url, name, login, location, html_url, followers, fo
     openButton.classList.toggle(`open`);
     closeButton.classList.toggle(`close`);
     cardInfoLower.classList.toggle(`close`);
+    card.classList.toggle(`card-expanded`);
 
   })
   closeButton.addEventListener(`click`, event => {
     openButton.classList.toggle(`open`);
     closeButton.classList.toggle(`close`);
     cardInfoLower.classList.toggle(`close`);
+    card.classList.toggle(`card-expanded`);
   })
 
   return card
